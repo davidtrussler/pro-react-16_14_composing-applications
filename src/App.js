@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {GeneralList} from './GeneralList'; 
 import {SortedList} from './SortedList'; 
-import {ProFeature} from './ProFeature'; 
+import {ProController} from './ProController'; 
 
-const ProList = ProFeature(SortedList); 
+const ProList = ProController(SortedList); 
 
 export default class App extends Component {
   constructor(props) {
@@ -11,8 +11,7 @@ export default class App extends Component {
 
     this.state = {
       names: ['Zoe', 'Bob', 'Alice', 'Dora', 'Joe'], 
-      cities: ['London', 'Paris', 'New York', 'Munich'], 
-      proMode: false
+      cities: ['London', 'Paris', 'New York', 'Munich']
     }
   }
 
@@ -24,22 +23,6 @@ export default class App extends Component {
     return (
       <div className="container-fluid">
         <div className="row">
-          <div className="col-12 text-center p-2">
-            <div className="form-check">
-              <label className="form-check-label">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  value={this.state.proMode}
-                  onChange={this.toggleProMode}
-                />
-                Pro Mode
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div className="row">
           <div className="col-3">
             <GeneralList
               list={this.state.names}
@@ -50,7 +33,6 @@ export default class App extends Component {
           <div className="col-3">
             <ProList
               list={this.state.names}
-              pro={this.state.proMode}
             />
           </div>
 
@@ -64,7 +46,6 @@ export default class App extends Component {
           <div className="col-3">
             <ProList
               list={this.state.cities}
-              pro={this.state.proMode}
             />
           </div>
         </div>
