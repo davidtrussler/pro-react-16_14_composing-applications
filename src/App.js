@@ -50,7 +50,12 @@ export default class App extends Component {
           <div className="col-6">
             <ProFeature
               pro = {this.state.proMode}
-              render = {() => <SortedList list={this.state.names}/>}
+              render = {text => 
+                <React.Fragment>
+                  <h4 className="text-center">{text}</h4>
+                  <SortedList list={this.state.names}/>
+                </React.Fragment>
+              }
             />
           </div>
         </div>
