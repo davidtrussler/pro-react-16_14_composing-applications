@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {ProModeContext} from './ProModeContext'; 
 
 export class ProModeToggle extends Component {
+	static contextType = ProModeContext; 
+
 	render() {
 		return (
 			<ProModeContext.Consumer>
@@ -10,8 +12,8 @@ export class ProModeToggle extends Component {
 						<input
 							type="checkbox"
 							className="form-check-input"
-							value={contextData.proMode}
-							onChange={contextData.toggleProMode}
+							value={this.context.proMode}
+							onChange={this.context.toggleProMode}
 						/>
 						<label className="form-check-label">
 							{this.props.label}
