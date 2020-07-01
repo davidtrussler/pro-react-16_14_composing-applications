@@ -1,11 +1,8 @@
 import React, {Component} from 'react';
 import {GeneralList} from './GeneralList'; 
 import {SortedList} from './SortedList'; 
-import {ProFeature} from './ProFeature'; 
-// import {ProController} from './ProController'; 
-// import {LogToConsole} from './LogToConsole'; 
-
-// const ProList = ProController(LogToConsole(SortedList, 'Sorted', true, true, true)); 
+import {ProModeContext} from './ProModeContext'; 
+import {ProModeToggle} from './ProModeToggle'; 
 
 export default class App extends Component {
   constructor(props) {
@@ -14,51 +11,57 @@ export default class App extends Component {
     this.state = {
       names: ['Zoe', 'Bob', 'Alice', 'Dora', 'Joe'], 
       cities: ['London', 'Paris', 'New York', 'Munich'], 
-      proMode: false
+      proContextData: {
+        proMode: false, 
+        toggleProMode: this.toggleProMode
+      }, 
+      superProContextData: {
+        proMode: false, 
+        toggleProMode: this.toggleSuperMode
+      }
     }
-  }
+  }; 
 
   toggleProMode = () => {
-    this.setState({proMode: !this.state.proMode}); 
-  }
+    this.setState(state => state.proContextData.proMode = !state.proContextData.proMode); 
+  }; 
+
+  toggleSuperMode = () => {
+    this.setState(state => state.superProContextData.proMode = !state.superProContextData.proMode); 
+  }; 
 
   render() {
     return (
       <div className="container-fluid">
-        <div className="row">
-          <div className="col-12 text-center p-2">
-            <div className="form-check">
-              <input
-                type="checkbox"
-                className="form-check-input"
-                value={this.state.proMode}
-                onChange={this.toggleProMode}
-              />
-              <label className="form-check-label">Pro Mode</label>
+        <ProModeContext.Provider value={this.state.proContextData}>
+          <div className="row">
+            <div className="col-6 text-center p-2">
+              <ProModeContext.Provider value={this.state.proContextData}>
+                <ProModeToggle label="Pro Mode"/>
+              </ProModeContext.Provider>
+            </div>
+
+            <div className="col-6 text-center p-2">
+              <ProModeContext.Provider value={this.state.superProContextData}>
+                <ProModeToggle label="Super Pro Mode"/>
+              </ProModeContext.Provider>
             </div>
           </div>
-        </div>
 
-        <div className="row">
-          <div className="col-6">
-            <GeneralList
-              list={this.state.names}
-              theme="primary"
-            />
-          </div>
+          <div className="row">
+            <div className="col-6">
+              <ProModeContext.Provider value={this.state.proContextData}>
+                <SortedList list={this.state.names}/>
+              </ProModeContext.Provider>
+            </div>
 
-          <div className="col-6">
-            <ProFeature
-              pro = {this.state.proMode}
-              render = {text => 
-                <React.Fragment>
-                  <h4 className="text-center">{text}</h4>
-                  <SortedList list={this.state.names}/>
-                </React.Fragment>
-              }
-            />
+            <div className="col-6">
+              <ProModeContext.Provider value={this.state.superProContextData}>
+                <SortedList list={this.state.cities}/>
+              </ProModeContext.Provider>
+            </div>
           </div>
-        </div>
+        </ProModeContext.Provider>
       </div>
     )
   }
